@@ -1,0 +1,74 @@
+name: Git Release Branch Merge Action
+
+description: |-
+  Automates the process of pushing merge commits into a "release" branch from
+  either a source branch (ie `main`) or from Git Tags/Releases.
+
+author: Matt Wise <matt@nextdoor.com>
+
+branding:
+  color: green
+  icon: arrow-up-right
+
+inputs:
+  dry:
+    description: Whether or not this action will run in a dry run or not.
+    default: false
+    required: false
+
+  verbose:
+    description: |-
+      Should the script output all of the commands (set -x) while its running or not?
+    default: false
+    required: false
+
+  commit_message:
+    description: Commit message
+    required: false
+    default: Automatic Merge
+
+  release_branch:
+    description: Release branch to merge into
+    required: true
+
+  commit_options:
+    description: Commit options (eg. --no-verify)
+    required: false
+    default: ''
+
+  commit_user_name:
+    description: Name used for the commit user
+    required: false
+    default: GitHub Actions
+
+  commit_user_email:
+    description: Email address used for the commit user
+    required: false
+    default: actions@github.com
+
+  commit_author:
+    description: Value used for the commit author. Defaults to the username of whoever triggered this workflow run.
+    required: false
+    default: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+
+  push_options:
+    description: Push options (eg. --force)
+    required: false
+    default: ''
+
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: $GITHUB_ACTION_PATH/entrypoint.sh
+      env:
+        INPUT_DRY: ${{ inputs.dry }}
+        INPUT_VERBOSE: ${{ inputs.verbose }}
+        INPUT_COMMIT_MESSAGE: ${{ inputs.commit_message }}
+        INPUT_RELEASE_BRANCH: ${{ inputs.release_branch }}
+        INPUT_COMMIT_OPTIONS: ${{ inputs.commit_options }}
+        INPUT_COMMIT_USER_NAME: ${{ inputs.commit_user_name }}
+        INPUT_COMMIT_AUTHOR: ${{ inputs.commit_author }}
+        INPUT_COMMIT_USER_EMAIL: ${{ inputs.commit_user_email }}
+        INPUT_PUSH_OPTIONS: ${{ inputs.push_options }}
