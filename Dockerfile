@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.19
 
 LABEL "com.github.actions.name"="Helm Create Tag from Version Action"
 LABEL "com.github.actions.description"="Automates the process of pushing merge commits into a "release" branch from either a source branch (ie `main`) or from Git Tags/Releases."
